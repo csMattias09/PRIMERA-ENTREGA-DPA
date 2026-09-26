@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/csMattias09/exchange-divisas-DAW2026.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/csMattias09/intercambio_Divisas_Front_Web.git

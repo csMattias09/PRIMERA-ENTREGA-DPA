@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: xchang-backend
+    ports:
+      - "5198:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: ${SUPABASE_DB_CONNECTION}
+      Supabase__ProjectId: ${SUPABASE_PROJECT_ID}
+      Supabase__Url: ${SUPABASE_URL}
+      Supabase__AnonKey: ${SUPABASE_ANON_KEY}
+      Supabase__ServiceRoleKey: ${SUPABASE_SERVICE_ROLE_KEY}
+      BrevoSettings__ApiKey: ${BREVO_API_KEY}
+      BrevoSettings__CorreoRemitente: ${BREVO_SENDER_EMAIL}
+      Groq__ApiKey: ${GROQ_API_KEY}
+      FrontendSettings__BaseUrl: http://localhost:9200
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        API_URL: http://localhost:5198/api
+        ASSET_BASE_URL: http://localhost:5198
+    container_name: xchang-frontend
+    ports:
+      - "9200:8080"
+    depends_on:
+      - backend
+    restart: unless-stopped
